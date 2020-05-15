@@ -1,0 +1,20 @@
+drink
+wine
+palate
+flavors
+nose
+aromas
+blend
+flavor
+finish
+notes
+aroma
+note 
+touch
+hint
+and
+like
+show
+taste
+fruit
+black fruit
