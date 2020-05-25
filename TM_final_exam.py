@@ -2,7 +2,6 @@ import csv
 import re
 from collections import defaultdict
 from copy import deepcopy
-from nltk.tag.stanford import StanfordNERTagger
 import pickle
 from pathlib import Path
 import config
@@ -11,6 +10,7 @@ import math
 from nltk.corpus import stopwords
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
+
 
 def computeReviewTFDict(review):
     """ Returns a tf dictionary for each review whose keys are all
@@ -70,6 +70,10 @@ corpus = dir.picke_load(pickle_corpus)
 split_sent = dir.picke_load(pickle_split_sent)
 tfDict = dir.picke_load(pickle_tfDict)
 
+# corpus      = []
+# split_sent  = []
+# tfDict      = []
+
 # if there are no previous data, create and save them
 if len(corpus)==0  or len(split_sent)== 0 or len(tfDict)== 0:
     print("Create corpus..")
@@ -82,14 +86,14 @@ if len(corpus)==0  or len(split_sent)== 0 or len(tfDict)== 0:
 
     #create split sent and
     print("Create single word docs..")
+    punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
     for doc in corpus:
-        doc = re.sub(r'[^\w\s]', '', doc)
-        sent_in_word = []
+        doc = re.sub(r'[^\w\s\d-]', '', doc)
+        sent_word_split = []
         for word in doc.lower().split():
             if word not in stopwords:
-                    sent_in_word.append(word)
-        split_sent.append(sent_in_word)
-
+                    sent_word_split.append(word)
+        split_sent.append(sent_word_split)
     print("calculate TF in dict")
     for i, sent in enumerate(split_sent):
         tfDict.append(computeReviewTFDict(sent))
@@ -100,6 +104,34 @@ if len(corpus)==0  or len(split_sent)== 0 or len(tfDict)== 0:
 else:
     print("Load data from pickle..")
 
+
+"""stanford ner"""
+#stanford ner tagger
+# jar = './stanford-ner-tagger/stanford-ner.jar'
+# model = './stanford-ner-tagger/ner-model-english.ser.gz'
+# st = StanfordNERTagger(model, jar)
+# i=0
+# set= set()
+# with open('wine-flavour.txt', 'w') as f:
+#
+#     for sent in split_sent:
+#         #     print("word", word)
+#         #     set.add(word)
+#
+#         # print (sent)
+#         #
+#         print(i)
+#         i = i+1
+#         if i==200:
+#             break
+#     for s in set:
+#         # print(set)
+#         print(s)
+#         f.write("%s\n" % s)
+#         # # print(word)
+#
+
+"""SPACYYY"""
 
 print("number of docs: ",len(corpus))
 print("number of split_sent:", len(split_sent))
